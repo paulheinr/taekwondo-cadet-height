@@ -4,13 +4,13 @@
     <div class="container mrgnbtm">
       <div class="row">
         <div class="col-md">
-          <SearchPlayer @createUser="userCreate($event)"/>
+          <SearchPlayer @updatePlayer="updatePlayer($event)"/>
         </div>
       </div>
     </div>
     <div class="container mrgnbtm">
       <div class="container">
-        <Users v-if="users.length > 0" :users="users"/>
+        <Users v-if="players.length > 0" :players="players"/>
       </div>
     </div>
   </div>
@@ -22,7 +22,7 @@ import CreateUser from './CreatePlayer.vue'
 import DisplayBoard from './DisplayBoard.vue'
 import Users from './Player.vue'
 import SearchPlayer from "@/components/SearchPlayer.vue";
-import {getAllUsers, createUser} from '@/services/UserService'
+import {getAllPlayers} from "@/services/PlayerService";
 
 export default {
   name: 'Dashboard',
@@ -35,28 +35,21 @@ export default {
   },
   data() {
     return {
-      users: [],
+      players: [],
       numberOfUsers: 0
     }
   },
   methods: {
-    getAllUsers() {
-      getAllUsers().then(response => {
-        console.log(response)
-        this.users = response
-        this.numberOfUsers = this.users.length
+    updatePlayer(data) {
+      getAllPlayers().then(response => {
+        this.players = response.sort((a, b) => {
+          b.lastUpdate - a.lastUpdate
+        })
       })
-    },
-    userCreate(data) {
-      console.log('data:::', data)
-      createUser(data).then(response => {
-        console.log(response);
-        this.getAllUsers();
-      });
     }
   },
   mounted() {
-    this.getAllUsers();
+    this.updatePlayer();
   }
 }
 </script>

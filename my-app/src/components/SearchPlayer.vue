@@ -5,11 +5,12 @@
         <div class="col-md-6 mrgnbtm">
           <h2>Kämpfer suchen</h2>
           <form>
+            <button type="submit" disabled style="display: none" aria-hidden="true"></button>
             <div class="row">
               <div class="form-group col-md-6">
                 <label>ID</label>
-                <input type="text" class="form-control" v-model="inputId" name="id" id="id"
-                       aria-describedby="emailHelp" placeholder="ID"/>
+                <input type="text" class="form-control" v-model="inputId" name="id" id="id" v-on:keypress="numbersOnly"
+                       v-on:keyup.enter="searchPlayer" aria-describedby="emailHelp" placeholder="ID"/>
               </div>
             </div>
             <button type="button" @click='searchPlayer()' class="btn btn-dark">Suchen</button>
@@ -60,16 +61,23 @@
     <div class="container mrgnbtm">
       <h2>Größe erfassen</h2>
       <form>
+        <!-- Prevent submission by enter -->
+        <button type="submit" disabled style="display: none" aria-hidden="true"></button>
         <div class="row">
           <div class="form-group col-md-6">
             <label>Größe in cm</label>
             <input type="text" class="form-control" v-model="newHeight" name="height" id="height"
-                   placeholder="Größe"/>
+                   v-on:keyup.enter="updatePlayer" placeholder="Größe" v-on:keypress="numbersOnly"/>
           </div>
         </div>
         <button type="button" @click='updatePlayer()' class="btn btn-dark">Größe eintragen</button>
       </form>
+      <b-alert class="mrgnbtm" :show="alertCountdown" dismissible variant="success" @dismissed="alertCountdown=0">
+        Größe wurde erfolgreich eingetragen.
+      </b-alert>
     </div>
+
+
   </div>
 </template>
 
@@ -81,6 +89,7 @@ const defaultPlayer = {
   name: "---",
   club: "---",
   height: "---",
+  lastUpdate: "---"
 }
 
 export default {
@@ -90,6 +99,7 @@ export default {
       player: defaultPlayer,
       newHeight: null,
       inputId: null,
+      alertCountdown: 0
     }
   },
   methods: {
@@ -101,6 +111,18 @@ export default {
       console.log("Updating player" + this.inputId)
       await updateHeight(this.player.id, parseInt(this.newHeight))
       this.clearForm();
+      this.alertCountdown = 2;
+      this.$emit("updatePlayer")
+    },
+    numbersOnly(evt) {
+      evt = (evt) ? evt : window.event;
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+        evt.preventDefault();
+
+      } else {
+        return true;
+      }
     },
     clearForm() {
       this.player = defaultPlayer;

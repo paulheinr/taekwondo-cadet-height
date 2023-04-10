@@ -11,7 +11,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="item in users" :key="item.id">
+      <tr v-for="item in players" :key="item.id">
         <td>{{ item.id }}</td>
         <td>{{ item.name }}</td>
         <td>{{ item.club }}</td>
@@ -25,7 +25,7 @@
 <script>
 
 export default {
-  name: 'Users',
-  props: ['users']
+  name: 'Players',
+  props: ['players']
 }
 </script>

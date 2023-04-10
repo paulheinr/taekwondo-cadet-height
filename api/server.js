@@ -37,13 +37,15 @@ const players = [
         id: "1",
         name: "Max Mustermann",
         club: "TKD Club",
-        height: null
+        height: null,
+        lastUpdate: null,
     },
     {
         id: "2",
         name: "Marianna Mustermann",
         club: "TKD Club",
-        height: null
+        height: null,
+        lastUpdate: null
     }
 ]
 app.use(bodyParser.json());
@@ -70,13 +72,20 @@ app.get('/api/player/:id', (req, res) => {
     res.json(players.find(e => e.id == id))
 })
 
+app.get('/api/player', (req, res) => {
+    res.json(players)
+})
+
 app.post('/api/player', (req, res) => {
     const id = req.body.id;
     const newHeight = req.body.height;
     console.log("Update player with id " + id + " with new height " + newHeight)
+
     let indexOfPlayer = players.findIndex(e => e.id == id);
     players[indexOfPlayer].height = newHeight;
-    console.log("Updated player " + players[indexOfPlayer])
+    players[indexOfPlayer].lastUpdate = Date.now()
+
+    console.log("Updated player " + JSON.stringify(players[indexOfPlayer]))
     res.json(players[indexOfPlayer])
 })
 
