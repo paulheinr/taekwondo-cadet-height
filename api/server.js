@@ -8,8 +8,9 @@ port = 3070;
 let db = new sqlite3.Database('./cadets.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
         console.error(err.message);
+    } else {
+        console.log('Connected to the cadet database.');
     }
-    console.log('Connected to the cadet database.');
 });
 
 app.use(bodyParser.json());

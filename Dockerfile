@@ -9,6 +9,7 @@ COPY --from=ui-build /usr/src/app/my-app/dist ./my-app/dist
 COPY api/package*.json ./api/
 RUN cd api && npm install
 COPY api/server.js ./api/
+COPY api/cadets.db ./
 
 EXPOSE 3070
 
