@@ -7,7 +7,7 @@ export async function getPlayer(id) {
 }
 
 export async function updateHeight(id, height) {
-    const response = await axios.post(`/api/player`, {id: id, height: height});
+    const response = await axios.patch(`/api/player`, {id: id, height: height});
     return response.data;
 }
 

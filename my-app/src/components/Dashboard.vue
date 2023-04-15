@@ -42,9 +42,15 @@ export default {
   methods: {
     updatePlayer(data) {
       getAllPlayers().then(response => {
-        this.players = response.sort((a, b) => {
-          b.lastUpdate - a.lastUpdate
+        response.sort((a, b) => {
+          var keyA = new Date(a.lastUpdate),
+              keyB = new Date(b.lastUpdate);
+          // Compare the 2 dates
+          if (keyA < keyB) return 1;
+          if (keyA > keyB) return -1;
+          return 0;
         })
+        this.players = response;
       })
     }
   },

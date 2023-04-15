@@ -1,92 +1,75 @@
 const express = require('express');
-const randomId = require('random-id');
 const app = express(),
     bodyParser = require("body-parser");
+const sqlite3 = require('sqlite3');
+
 port = 3070;
 
-// place holder for the data
-const users = [
-    {
-        id: "1",
-        firstName: "first1",
-        lastName: "last1",
-        email: "abc@gmail.com"
-    },
-    {
-        id: "2",
-        firstName: "first2",
-        lastName: "last2",
-        email: "abc@gmail.com"
-    },
-    {
-        id: "3",
-        firstName: "first3",
-        lastName: "last3",
-        email: "abc@gmail.com"
-    },
-    {
-        id: "4",
-        firstName: "first4",
-        lastName: "last4",
-        email: "abc@gmail.com"
+let db = new sqlite3.Database('./cadets.db', sqlite3.OPEN_READWRITE, (err) => {
+    if (err) {
+        console.error(err.message);
     }
-];
+    console.log('Connected to the cadet database.');
+});
 
-const players = [
-    {
-        id: "1",
-        name: "Max Mustermann",
-        club: "TKD Club",
-        height: null,
-        lastUpdate: null,
-    },
-    {
-        id: "2",
-        name: "Marianna Mustermann",
-        club: "TKD Club",
-        height: null,
-        lastUpdate: null
-    }
-]
 app.use(bodyParser.json());
 app.use(express.static(process.cwd() + '/my-app/dist'));
 
-// --- USERS ---
-app.get('/api/users', (req, res) => {
-    console.log('api/users called!!!!!!!')
-    res.json(users);
-});
-
-app.post('/api/user', (req, res) => {
-    const user = req.body.user;
-    user.id = randomId(10);
-    console.log('Adding user:::::', user);
-    users.push(user);
-    res.json("user addedd");
-});
-
 // --- PLAYERS ---
 app.get('/api/player/:id', (req, res) => {
-    let id = req.params.id;
-    console.log("Queried player with id " + id)
-    res.json(players.find(e => e.id == id))
+    const sql = "select * from Fighter where number = ?";
+    const params = ["ZZZ-" + req.params.id];
+    db.get(sql, params, (err, row) => {
+        if (err) {
+            res.status(400).json({"error": err.message});
+            return;
+        }
+        if (row === undefined) {
+            res.status(400).json({"error": "no such player"});
+            return;
+        }
+        res.json(databaseRowToPlayerJson(row))
+    })
 })
 
 app.get('/api/player', (req, res) => {
-    res.json(players)
+    const sql = "select * from Fighter";
+    const params = [];
+    db.all(sql, params, (err, rows) => {
+        if (err) {
+            res.status(400).json({"error": err.message});
+            return;
+        }
+        var result = [];
+        rows.forEach(r => result.push(databaseRowToPlayerJson(r)))
+        res.json(result)
+    })
 })
 
-app.post('/api/player', (req, res) => {
-    const id = req.body.id;
-    const newHeight = req.body.height;
-    console.log("Update player with id " + id + " with new height " + newHeight)
+app.patch('/api/player', (req, res) => {
+    const sql = "update Fighter set height = ?, lastUpdate = datetime() where number = ?";
+    const params = [req.body.height, "ZZZ-" + req.body.id];
+    db.run(sql, params, (err, _) => {
+        if (err) {
+            res.status(400).json({"error": err.message});
+            return;
+        }
 
-    let indexOfPlayer = players.findIndex(e => e.id == id);
-    players[indexOfPlayer].height = newHeight;
-    players[indexOfPlayer].lastUpdate = Date.now()
-
-    console.log("Updated player " + JSON.stringify(players[indexOfPlayer]))
-    res.json(players[indexOfPlayer])
+        // query player to return
+        const sql_search = "select * from Fighter where number = ?";
+        const params = ["ZZZ-" + req.body.id];
+        db.get(sql_search, params, (err, row) => {
+            if (err) {
+                res.status(400).json({"error": err.message});
+                return;
+            }
+            if (row === undefined) {
+                res.status(400).json({"error": "no such player"});
+                return;
+            }
+            res.json(databaseRowToPlayerJson(row))
+        })
+    })
 })
 
 app.get('/', (req, res) => {
@@ -96,3 +79,13 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`Server listening on the port::${port}`);
 });
+
+function databaseRowToPlayerJson(row) {
+    return {
+        id: row.number.slice(4),
+        name: row.lastname,
+        club: row.club,
+        height: row.height,
+        lastUpdate: row.lastUpdate,
+    }
+}
