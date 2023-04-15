@@ -48,7 +48,7 @@ app.get('/api/player', (req, res) => {
 })
 
 app.patch('/api/player', (req, res) => {
-    const sql = "update Fighter set height = ?, lastUpdate = datetime() where number = ?";
+    const sql = "update Fighter set height = ?, lastUpdate = datetime(datetime(),'+2 hours') where number = ?";
     const params = [req.body.height, "ZZZ-" + req.body.id];
     db.run(sql, params, (err, _) => {
         if (err) {

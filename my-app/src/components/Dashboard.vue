@@ -18,8 +18,6 @@
 
 <script>
 import Header from './Header.vue'
-import CreateUser from './CreatePlayer.vue'
-import DisplayBoard from './DisplayBoard.vue'
 import Users from './Player.vue'
 import SearchPlayer from "@/components/SearchPlayer.vue";
 import {getAllPlayers} from "@/services/PlayerService";
@@ -28,15 +26,12 @@ export default {
   name: 'Dashboard',
   components: {
     Header,
-    CreateUser,
-    DisplayBoard,
     Users,
     SearchPlayer
   },
   data() {
     return {
       players: [],
-      numberOfUsers: 0
     }
   },
   methods: {

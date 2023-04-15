@@ -16,20 +16,27 @@ export default {
     Dashboard
   },
   data() {
-      return {
-          settings: false
-      }
+    return {
+      settings: false
+    }
   },
   mounted() {
     console.log("I am in mounted!!!")
     this.settings = true
   },
-  setup () {
+  setup() {
     console.log("I am in setup!!!")
+  },
+  head: {
+    title: {
+      inner: 'DTU  Größenmessung',
+      separator: '',
+      complement: ''
+    }
   }
 }
 </script>
 
 <style>
-  @import './assets/styles/global.css';
+@import './assets/styles/global.css';
 </style>
