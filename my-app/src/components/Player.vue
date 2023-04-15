@@ -25,6 +25,11 @@ export default {
           sortable: true
         },
         {
+          key: "name",
+          label: "Name",
+          sortable: true
+        },
+        {
           key: "club",
           label: "Verein",
           sortable: true
