@@ -1,5 +1,16 @@
 # TKD Cadet Height
 
+## Init Database
+
+Copy SQLite3 Database file named `cadets.db` to `./api`. Table `Fighter` must contain fields
+
+* number (PK)
+* lastname
+* club
+* (tournamendUid)
+* height
+* lastUpdate
+
 ## Dev mode
 
 Start frontend:
