@@ -1,7 +1,11 @@
 const express = require('express');
 const app = express(),
     bodyParser = require("body-parser");
+
 const sqlite3 = require('sqlite3');
+
+const fs = require('fs');
+const https = require('https');
 
 port = 3070;
 
@@ -77,7 +81,15 @@ app.get('/', (req, res) => {
     res.sendFile(process.cwd() + '/my-app/dist/index.html');
 });
 
-app.listen(port, () => {
+const privateKey = fs.readFileSync('../bin/localhost+1-key.pem', 'utf8');
+const certificate = fs.readFileSync('../bin/localhost+1.pem', 'utf8');
+
+const credentials = {
+    key: privateKey,
+    cert: certificate,
+};
+
+https.createServer(credentials, app).listen(port, () => {
     console.log(`Server listening on the port::${port}`);
 });
 

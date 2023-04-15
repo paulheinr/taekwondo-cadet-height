@@ -15,6 +15,9 @@
               </div>
             </div>
             <button type="button" @click='searchPlayer()' class="btn btn-dark">Suchen</button>
+            <button type="button" @click='() => popupTrigger = true' class="btn btn-danger" style="margin-left: 20px">ID
+              Scannen
+            </button>
           </form>
         </div>
 
@@ -58,9 +61,10 @@
         </div>
       </div>
 
-      <div class="row">
-        <!--        <qrcode-stream @decode="onDecode"></qrcode-stream>-->
-      </div>
+      <ScannerPopup @scanned-id="scannedId" v-if="popupTrigger"
+                    :TogglePopup="() => popupTrigger = false"></ScannerPopup>
+
+
     </div>
 
     <div class="container mrgnbtm">
@@ -88,6 +92,7 @@
 
 <script>
 import {getPlayer, updateHeight} from "@/services/PlayerService";
+import ScannerPopup from "@/components/ScannerPopup.vue";
 
 const defaultPlayer = {
   id: "---",
@@ -99,12 +104,14 @@ const defaultPlayer = {
 
 export default {
   name: 'SearchPayer',
+  components: {ScannerPopup},
   data() {
     return {
       player: defaultPlayer,
       newHeight: null,
       inputId: null,
-      alertCountdown: 0
+      alertCountdown: 0,
+      popupTrigger: false
     }
   },
   methods: {
@@ -129,25 +136,9 @@ export default {
         return true;
       }
     },
-    onDecode(decodedString) {
-      this.inputId = decodedString
-    },
-    async onDetect(promise) {
-      try {
-        const {
-          imageData,    // raw image data of image/frame
-          content,      // decoded String or null
-          location      // QR code coordinates or null
-        } = await promise
-
-        if (content === null) {
-          this.inputId = 42
-        } else {
-          this.inputId = content
-        }
-      } catch (error) {
-        // ...
-      }
+    scannedId(id) {
+      this.inputId = id;
+      this.searchPlayer();
     },
     clearForm() {
       this.player = defaultPlayer;

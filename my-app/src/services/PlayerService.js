@@ -13,6 +13,5 @@ export async function updateHeight(id, height) {
 
 export async function getAllPlayers() {
     const response = await axios.get('/api/player');
-    // console.log("Got players: " + response.data)
     return response.data;
 }
