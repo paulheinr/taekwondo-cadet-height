@@ -37,3 +37,9 @@ Build docker container:
 docker build -t tkd-cadet-heights .
 docker run -d -p 3070:3070 tkd-cadet-heights
 ```
+
+Copy database to local file `backup.db`:
+
+```shell
+docker cp <container-id>:/root/cadets.db ./backup.db
+```
