@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    DTU Größenerfassung Kadetten
+    DTU-Größenerfassung Kadetten
   </div>
 </template>
 

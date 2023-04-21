@@ -21,37 +21,37 @@
         <div class="col-md-6 mrgnbtm">
           <h2>Aktueller Kämpfer</h2>
           <div class="row">
-            <div class="col-md">
+            <div class="col-3">
               <label style="font-weight:bold">ID</label>
             </div>
-            <div class="col-md">
+            <div class="col">
               <label>{{ player.id }}</label>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md">
+            <div class="col-3">
               <label style="font-weight:bold">Name</label>
             </div>
-            <div class="col-md">
+            <div class="col">
               <label>{{ player.name }}</label>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md">
+            <div class="col-3">
               <label style="font-weight:bold">Verein</label>
             </div>
-            <div class="col-md">
+            <div class="col">
               <label>{{ player.club }}</label>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md">
+            <div class="col-3">
               <label style="font-weight:bold">Größe</label>
             </div>
-            <div class="col-md">
+            <div class="col">
               <label>{{ player.height }}</label>
             </div>
           </div>
