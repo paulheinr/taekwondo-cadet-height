@@ -17,7 +17,9 @@ export default {
   props: ["TogglePopup"],
   methods: {
     onDecode(decodedString) {
-      this.$emit("scanned-id", decodedString)
+      let data = decodedString.replace(/^\D+/g, '');
+      this.$emit("scanned-id", data)
+      console.log("Scanned ID", data)
       this.TogglePopup();
     },
     paintOutline(detectedCodes, ctx) {

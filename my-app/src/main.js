@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import {BootstrapVue} from 'bootstrap-vue'
-import VueQrcodeReader from "vue-qrcode-reader";
+import VueQrcodeReader from "vue-multicode-reader";
 import VueHead from "vue-head";
 
 Vue.config.productionTip = false
