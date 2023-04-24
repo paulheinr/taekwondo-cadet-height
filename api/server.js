@@ -81,8 +81,8 @@ app.get('/', (req, res) => {
     res.sendFile(process.cwd() + '/my-app/dist/index.html');
 });
 
-const privateKey = fs.readFileSync('../bin/localhost+1-key.pem', 'utf8');
-const certificate = fs.readFileSync('../bin/localhost+1.pem', 'utf8');
+const privateKey = fs.readFileSync('./bin/localhost-key.pem', 'utf8');
+const certificate = fs.readFileSync('./bin/localhost.pem', 'utf8');
 
 const credentials = {
     key: privateKey,

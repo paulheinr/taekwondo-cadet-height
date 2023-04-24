@@ -9,8 +9,8 @@ module.exports = {
             },
         },
         https: {
-            key: fs.readFileSync("../bin/localhost+1-key.pem"),
-            cert: fs.readFileSync("../bin/localhost+1.pem"),
+            key: fs.readFileSync("../bin/localhost-key.pem"),
+            cert: fs.readFileSync("../bin/localhost.pem"),
         },
         //public: 'https://localhost:8082/'
     }
