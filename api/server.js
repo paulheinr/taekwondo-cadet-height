@@ -4,9 +4,6 @@ const app = express(),
 
 const sqlite3 = require('sqlite3');
 
-const fs = require('fs');
-const https = require('https');
-
 port = 3070;
 
 let db = new sqlite3.Database('./cadets.db', sqlite3.OPEN_READWRITE, (err) => {
@@ -81,15 +78,7 @@ app.get('/', (req, res) => {
     res.sendFile(process.cwd() + '/my-app/dist/index.html');
 });
 
-const privateKey = fs.readFileSync('./bin/localhost-key.pem', 'utf8');
-const certificate = fs.readFileSync('./bin/localhost.pem', 'utf8');
-
-const credentials = {
-    key: privateKey,
-    cert: certificate,
-};
-
-https.createServer(credentials, app).listen(port, () => {
+app.listen(port, () => {
     console.log(`Server listening on the port::${port}`);
 });
 
